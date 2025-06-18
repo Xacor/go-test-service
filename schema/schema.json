@@ -1,0 +1,464 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Goods Service API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "paths": {
+        "/good/create": {
+            "post": {
+                "summary": "Создание товара",
+                "parameters": [
+                    {
+                        "name": "projectId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/create_good"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешное создание",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/create_good_response_data"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка валидации"
+                    }
+                }
+            }
+        },
+        "/good/update": {
+            "patch": {
+                "summary": "Обновление товара",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "projectId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/update_good"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешное обновление",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/update_good_response_data"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Товар не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_response_data"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/good/remove": {
+            "delete": {
+                "summary": "Удаление товара",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "projectId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешное удаление",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/remove_good_response_data"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Товар не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_response_data"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/good/list": {
+            "get": {
+                "summary": "Получение списка товаров",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "default": 10
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "default": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список товаров",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/get_good_response_data"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/good/reprioritize": {
+            "patch": {
+                "summary": "Обновление приоритета товара",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "projectId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "newPriority"
+                                ],
+                                "properties": {
+                                    "newPriority": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Приоритет обновлён",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/reprioritize_good_response_data"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Товар не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_response_data"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "good": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "project_id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "integer"
+                    },
+                    "removed": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "create_good": {
+                "type": "object",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "x-oapi-codegen-extra-tags": {
+                            "validate": "required"
+                        }
+                    }
+                }
+            },
+            "create_good_response_data": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "project_id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "integer"
+                    },
+                    "removed": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "remove_good_response_data": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "project_id": {
+                        "type": "integer"
+                    },
+                    "removed": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "update_good": {
+                "type": "object",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "x-oapi-codegen-extra-tags": {
+                            "validate": "required"
+                        }
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "update_good_response_data": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "project_id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "integer"
+                    },
+                    "removed": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "get_good_response_data": {
+                "type": "object",
+                "properties": {
+                    "meta": {
+                        "$ref": "#/components/schemas/meta_data"
+                    },
+                    "goods": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/good"
+                        }
+                    }
+                }
+            },
+            "meta_data": {
+                "type": "object",
+                "properties": {
+                    "total": {
+                        "type": "integer"
+                    },
+                    "removed": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "reprioritize_good_response_data": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "integer"
+                        },
+                        "priority": {
+                            "type": "integer",
+                            "x-oapi-codegen-extra-tags": {
+                                "validate": "required"
+                            }
+                        }
+                    }
+                }
+            },
+            "error_response_data": {
+                "required": [
+                    "error"
+                ],
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "$ref": "#/components/schemas/error"
+                    }
+                }
+            },
+            "error": {
+                "required": [
+                    "code",
+                    "message"
+                ],
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "details": {
+                        "type": "string"
+                    }
+                },
+                "description": "Подробная информация о возникшей ошибке"
+            }
+        }
+    }
+}
